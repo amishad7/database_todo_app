@@ -101,12 +101,70 @@ class HomePage extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    // showModalBottomSheet(
-                    //   context: context,
-                    //   builder: (context) {
-                    //     // return
-                    //   },
-                    // );
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return Container(
+                          // height: MediaQuery.sizeOf(context).height / 4,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: MediaQuery.sizeOf(context).height / 10,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      icon: const Icon(Icons.close),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 18.0),
+                                child: Container(
+                                  child: TextFormField(
+                                    decoration: InputDecoration(
+                                      border: UnderlineInputBorder(
+                                        borderRadius: BorderRadius.circular(0),
+                                      ),
+
+                                      hintText: "Write your today's task",
+                                      // suffixIcon: Icon(
+                                      //   Icons.search,
+                                      // ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: MediaQuery.sizeOf(context).height / 10,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {},
+                                    child: Text("Submit"),
+                                  ),
+                                  SizedBox(
+                                    width: 34,
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {},
+                                    child: Text("Clear"),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
                   },
                   child: Container(
                     height: 200,
