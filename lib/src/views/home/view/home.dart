@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:todo_app/src/utils/headers.dart';
+import 'package:todo_app/headers.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -151,7 +150,7 @@ class HomePage extends StatelessWidget {
                                     onPressed: () {},
                                     child: Text("Submit"),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 34,
                                   ),
                                   ElevatedButton(

@@ -1,4 +1,5 @@
-import 'headers.dart';
+import '../../../headers.dart';
+import '../../views/home/view/home.dart';
 
 String home = "home";
 

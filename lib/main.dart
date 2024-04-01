@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:todo_app/src/utils/headers.dart';
+import 'package:todo_app/headers.dart';
 
 void main() {
   runApp(const MyApp());
