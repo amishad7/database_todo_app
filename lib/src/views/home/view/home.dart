@@ -1,4 +1,6 @@
-import 'package:todo_app/headers.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:todo_app/src/utils/helpers/taskHelper.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -6,6 +8,8 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var textScaler = MediaQuery.of(context).textScaler;
+    var textCon = TextEditingController();
+    GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     return Scaffold(
       appBar: AppBar(
@@ -126,16 +130,24 @@ class HomePage extends StatelessWidget {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 18.0),
                                 child: Container(
-                                  child: TextFormField(
-                                    decoration: InputDecoration(
-                                      border: UnderlineInputBorder(
-                                        borderRadius: BorderRadius.circular(0),
-                                      ),
+                                  child: Form(
+                                    key: formKey,
+                                    child: TextFormField(
+                                      validator: (val) => val!.isEmpty
+                                          ? "Enter your daily task"
+                                          : null,
+                                      controller: textCon,
+                                      decoration: InputDecoration(
+                                        border: UnderlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(0),
+                                        ),
 
-                                      hintText: "Write your today's task",
-                                      // suffixIcon: Icon(
-                                      //   Icons.search,
-                                      // ),
+                                        hintText: "Write your today's task",
+                                        // suffixIcon: Icon(
+                                        //   Icons.search,
+                                        // ),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -147,15 +159,44 @@ class HomePage extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   ElevatedButton(
-                                    onPressed: () {},
-                                    child: Text("Submit"),
+                                    onPressed: () async {
+                                      if (formKey.currentState!.validate()) {
+                                        String text = textCon.text;
+                                        int? res = await TaskHelper.instance
+                                            .insertTask(text: text);
+
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            backgroundColor:
+                                                Colors.grey.withAlpha(45),
+                                            content: Text(
+                                              "$res Todo inserted.",
+                                              style:
+                                                  GoogleFonts.abel().copyWith(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        );
+
+                                        Navigator.pop(context);
+                                        textCon.clear();
+                                      }
+                                    },
+                                    child: const Text("Submit"),
                                   ),
                                   const SizedBox(
                                     width: 34,
                                   ),
                                   ElevatedButton(
-                                    onPressed: () {},
-                                    child: Text("Clear"),
+                                    onPressed: () {
+                                      if (formKey.currentState!.validate()) {
+                                        textCon.clear();
+                                      }
+                                    },
+                                    child: const Text("Clear"),
                                   ),
                                 ],
                               ),

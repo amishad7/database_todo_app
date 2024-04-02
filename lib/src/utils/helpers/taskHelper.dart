@@ -1,10 +1,15 @@
+import 'dart:developer';
+
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:todo_app/src/views/home/model/todo_model.dart';
 
 mixin taskApproaches {
-  void initDB();
+  Future<void> initDB();
 
-  void insertTask({required String text});
+  Future<int?> insertTask({required String text});
+
+  void getTasks();
 
   void deleteTask({required int index});
 
@@ -18,9 +23,9 @@ class TaskHelper with taskApproaches {
 
   String tableName = "TASKS";
 
-  String tableIndex = "index";
+  String tableId = "id";
 
-  String tableText = "userTask";
+  String tableText = "text";
 
   Database? database;
 
@@ -30,21 +35,42 @@ class TaskHelper with taskApproaches {
 
     String path = join(location, "tasks.db");
 
-    database = await openDatabase(path, version: 1, onCreate: (database, _) {
+    database = await openDatabase(path, version: 1, onCreate: (db, _) {
       String query =
-          "CREATE TABLE $tableName ($tableIndex INTEGER PRIMARY KEY AUTOINCREMENT,$tableText TEXT NOT NULL)";
+          "CREATE TABLE $tableName($tableId INTEGER PRIMARY KEY AUTOINCREMENT, $tableText TEXT NOT NULL);";
 
-      database.execute(query);
+      db.execute(query).then((value) {
+        log("$tableName table Created Successfully ");
+      }).onError((error, _) {
+        log("ERROR : $error");
+      });
     });
   }
 
   @override
-  void insertTask({required String text}) {}
+  Future<int?> insertTask({required String text}) async {
+    await initDB();
+    return await database?.insert(tableName, {
+      tableText: text,
+    });
+  }
 
   @override
-  void deleteTask({required int index}) {
-    // TODO: implement deleteTask
+  Future<List<TodoModel>?> getTasks() async {
+    await initDB();
+
+    String query = "SELECT * FROM $tableName";
+    List<Map<String, Object?>>? data = await database?.rawQuery(query);
+
+    return data
+        ?.map(
+          (e) => TodoModel.fromTable(data: e),
+        )
+        .toList();
   }
+
+  @override
+  deleteTask({required int index}) {}
 
   @override
   void updateTask({required int index, required String newText}) {
