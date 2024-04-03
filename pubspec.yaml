@@ -38,6 +38,7 @@ dependencies:
   google_fonts:
   sqflite: ^2.3.2
   path: ^1.9.0
+  provider:
 
 
 dev_dependencies:

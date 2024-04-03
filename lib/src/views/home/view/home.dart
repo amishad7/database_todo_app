@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:todo_app/src/utils/helpers/taskHelper.dart';
+import 'package:todo_app/src/views/home/provider/todo_provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -8,6 +9,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var textScaler = MediaQuery.of(context).textScaler;
+    TodoProvider todo = TodoProvider();
     var textCon = TextEditingController();
     GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -24,6 +26,7 @@ class HomePage extends StatelessWidget {
       ),
       backgroundColor: const Color(0xff181819),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
             // color: Colors.white,
@@ -225,6 +228,18 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ],
+            ),
+          ),
+          Expanded(
+            child: Container(
+              child: ListView.builder(
+                itemCount: todo.tasks?.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    child: Text('${todo.tasks?[index].text}'),
+                  );
+                },
+              ),
             ),
           ),
         ],
